@@ -25,6 +25,8 @@ input=function(){
   pensaomorte<<-as.numeric(dlgInput("Pensao por morte(sim=1, nao=0): ", Sys.info()["user"])$res)
   if(pensaomorte==1){
     coefreversao<<-as.numeric(dlgInput("Coeficiente de reversao(em decimal): ", Sys.info()["user"])$res)}
+  lastsurvivor<<-as.numeric(dlgInput("Situacao de ultimo sobrevivente(sim=1, nao=0): ", Sys.info()["user"])$res)
+  jointlives<<-as.numeric(dlgInput("Situacao de vidas conjuntas(sim=1, nao=0): ", Sys.info()["user"])$res)
 }
 
 input() #chamar funcao com os inputs
@@ -89,20 +91,21 @@ variaveis()  #chamada da funcao para criacao dos vetores
 
 #funcao para selecionar tabua
 selecttable=function(Sexo,TipoTabua){
+  #local do arquivo com a planilha com as tabuas
+  tabuainput=read_excel("D:/BrowserDownloads/EAC0424_T_GRUPOXX_TABUAS.xlsx")
   if(Sexo=="M" && TipoTabua==1){tabua=tabuainput[,2]}
   else if(Sexo=="F" && TipoTabua==1){tabua=tabuainput[,1]}
   else if(Sexo=="M" && TipoTabua==2){tabua=tabuainput[,4]}
   else if(Sexo=="F" && TipoTabua==2){tabua=tabuainput[,3]}
   else if(Sexo=="M" && TipoTabua==3){tabua=tabuainput[,6]}
   else if(Sexo=="F" && TipoTabua==3){tabua=tabuainput[,5]}
-
 }
 
 #selecttable()
-tabuaXYZ=function(selectable){
+tabuaXYZ=function(selectable,nvidas){
   tabuaX<<-selecttable(Sexo=SexoTitular,TipoTabua)
   tabuaY<<-selecttable(Sexo=SexoConjuge,TipoTabua)
-  tabuaZ<<-selecttable(Sexo=SexoDependente,TipoTabua)  
+    if(nvidas==3){tabuaZ<<-selecttable(Sexo=SexoDependente,TipoTabua)}
 }
 tabuaXYZ()
 
